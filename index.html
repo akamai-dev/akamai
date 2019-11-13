@@ -1,0 +1,354 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Polar Cop Browser Analytics</title>
+</head>
+
+<body>
+    <div>
+        <span style="color: green; font-size: 46px; text-align: center;" id="profile-harvester"></span>
+    </div>
+</body>
+<script>
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    var window_model = {
+        'screen': {
+            'availWidth': window['screen']['availWidth'],
+            'availHeight': window['screen']['availHeight'],
+            'width': window['screen']['width'],
+            'height': window['screen']['height'],
+            'colorDepth': window['screen']['colorDepth'],
+            'pixelDepth': window['screen']['pixelDepth']
+        },
+        'navigator': {
+            'userAgent': window.navigator.userAgent,
+            'productSub': navigator.productSub,
+            'language': navigator.language,
+            'product': navigator.product,
+            'onLine': navigator.onLine,
+            'vibrate': 'function' == typeof navigator['vibrate'],
+            'getBattery': 'function' == typeof navigator['getBattery'],
+            'credentials': Boolean(navigator['credentials']),
+            'appMinorVersion': Boolean(navigator['appMinorVersion']),
+            'bluetooth': Boolean(navigator['bluetooth']),
+            'storage': Boolean(navigator['storage']),
+            'getGamepads': Boolean(navigator['getGamepads']),
+            'getStorageUpdates': Boolean(navigator['getStorageUpdates']),
+            'hardwareConcurrency': Boolean(navigator['hardwareConcurrency']),
+            'mediaDevices': Boolean(navigator['mediaDevices']),
+            'mozAlarms': Boolean(navigator['mozAlarms']),
+            'mozConnection': Boolean(navigator['mozConnection']),
+            'mozIsLocallyAvailable': Boolean(navigator['mozIsLocallyAvailable']),
+            'mozPhoneNumberService': Boolean(navigator['mozPhoneNumberService']),
+            'msManipulationViewsEnabled': Boolean(navigator['msManipulationViewsEnabled']),
+            'permissions': Boolean(navigator['permissions']),
+            'registerProtocolHandler': Boolean(navigator['registerProtocolHandler']),
+            'requestMediaKeySystemAccess': Boolean(navigator['requestMediaKeySystemAccess']),
+            'requestWakeLock': Boolean(navigator['requestWakeLock']),
+            'sendBeacon': Boolean(navigator['sendBeacon']),
+            'serviceWorker': Boolean(navigator['serviceWorker']),
+            'storeWebWideTrackingException': Boolean(navigator['storeWebWideTrackingException']),
+            'webkitGetGamepads': Boolean(navigator['webkitGetGamepads']),
+            'webkitTemporaryStorage': Boolean(navigator['webkitTemporaryStorage']),
+            'webdriver': navigator['webdriver'],
+            'cookieEnabled': navigator['cookieEnabled'] ? navigator['cookieEnabled'] : -1,
+            'javaEnabled': navigator['javaEnabled'] ? navigator['javaEnabled']() : -1,
+            'doNotTrack': navigator['doNotTrack'] ? navigator['doNotTrack'] : -1,
+        },
+        'innerWidth': window['innerWidth'] || document['body']['clientWidth'],
+        'innerHeight': window['innerHeight'] || document['body']['clientHeight'],
+        'outerWidth': window['outerWidth'] || document['body']['outerWidth'],
+        'addEventListener': Boolean(window['addEventListener']),
+        'XMLHttpRequest': Boolean(window['XMLHttpRequest']),
+        'XDomainRequest': Boolean(window['XDomainRequest']),
+        'emit': window['emit'],
+        'DeviceOrientationEvent': Boolean(window['DeviceOrientationEvent']),
+        'DeviceMotionEvent': Boolean(window['DeviceMotionEvent']),
+        'TouchEvent': Boolean(window['TouchEvent']),
+        'spawn': window['spawn'],
+        'chrome': window['chrome'],
+        'prototype_bind': Boolean(Function['prototype']['bind']),
+        'Buffer': window['Buffer'],
+        'PointerEvent': Boolean(window['PointerEvent']),
+        '_phantom': window['_phantom'],
+        'webdriver': window['webdriver'],
+        'domAutomation': window['domAutomation'],
+        'callPhantom': window['callPhantom'],
+        'return/*@cc_on!@*/!1': new Function('return/*@cc_on!@*/!1')(),
+        'document': {
+            'documentMode': typeof document['documentMode'],
+            'webdriver': window['document']['documentElement']['getAttribute']('webdriver') != null,
+            'driver': window['document']['documentElement']['getAttribute']('driver') != null,
+            'selenium': null != window['document']['documentElement']['getAttribute']('selenium'),
+            'hidden': document['hidden'],
+            'mozHidden': document['mozHidden'],
+            'msHidden': document['msHidden'],
+            'webkitHidden': document['webkitHidden']
+        },
+        'opera': window['opera'],
+        'InstallTrigger': 'undefined' != typeof InstallTrigger,
+        'HTMLElement': window['HTMLElement'] && Object['prototype']['toString']['call'](window['HTMLElement'])[
+            'indexOf']('Constructor') > 0,
+        'webRTC': 'function' == typeof window['RTCPeerConnection'] || 'function' == typeof window[
+            'mozRTCPeerConnection'] || 'function' == typeof window['webkitRTCPeerConnection'],
+        'mozInnerScreenY': 'mozInnerScreenY' in window ? window['mozInnerScreenY'] : 0,
+        'prototype_forEach': Boolean(Array['prototype']['forEach']),
+        'FileReader': 'FileReader' in window,
+        'imul': Boolean(Math['imul']),
+        'parseInt': Boolean(Number['parseInt']),
+        'hypot': Boolean(Math['hypot']),
+        '$cdc_asdjflasutopfhvcZLmcfl_': Boolean(window['$cdc_asdjflasutopfhvcZLmcfl_'] || document[
+            '$cdc_asdjflasutopfhvcZLmcfl_']),
+        'XPathResult': void 0 !== window['XPathResult'] || void 0 !== document['XPathResult'],
+        'sessionStorage': !!window['sessionStorage'],
+        'localStorage': !!window['localStorage'],
+        'indexedDB': !!window['indexedDB']
+    };
+
+    var plugins = [];
+    for (var i = 0; i < navigator['plugins'].length; i++) {
+        plugins.push(navigator['plugins'][i].name);
+    }
+
+    window_model['navigator']['plugins'] = plugins;
+
+    var rCFP = [];
+
+    function canvas() {
+        var a = -1;
+        var e = document['createElement']('canvas');
+        e['width'] = 280;
+        e['height'] = 60;
+        e['style']['display'] = 'none';
+        if ('function' == typeof e['getContext']) {
+            var n = e['getContext']('2d');
+            n['fillStyle'] = 'rgb(102, 204, 0)';
+            n['fillRect'](100, 5, 80, 50);
+            n['fillStyle'] = '#f60';
+            n['font'] = '16pt Arial';
+            n['fillText']('<@nv45. F1n63r,Pr1n71n6!', 10, 40);
+            n['strokeStyle'] = 'rgb(120, 186, 176)';
+            n['arc'](80, 10, 20, 0, Math['PI'], !1);
+            n['stroke']();
+
+            var o = e['toDataURL']();
+
+            a = 0;
+            for (var m = 0; m < o['length']; m++) {
+                a = (a << 5) - a + o['charCodeAt'](m), a &= a
+            }
+
+            a = a['toString']();
+
+            for (var rVal = 0; rVal <= 1000; rVal++) {
+                var r = document['createElement']('canvas');
+
+                r['width'] = 16;
+                r['height'] = 16;
+
+                var i = r['getContext']('2d');
+
+                i['font'] = '6pt Arial';
+                i['fillText'](rVal, 1, 12);
+                var c = r['toDataURL'](),
+                    b = 0;
+                for (var d = 0; d < c['length']; d++) {
+                    b = (b << 5) - b + c['charCodeAt'](d), b &= b
+                }
+
+                rCFP[rVal] = b['toString']()
+            }
+
+            return a;
+        }
+    }
+
+    window_model['canvas'] = canvas();
+    window_model['rCFP'] = rCFP;
+
+    function get_cf_date() {
+        return Date['now'] ? Date['now']() : +new Date
+    }
+
+    function fonts_optm() {
+        var a = 200,
+            e = get_cf_date(),
+            n = [];
+        var o = ['sans-serif', 'monospace'],
+            m = [0, 0],
+            r = [0, 0],
+            i = document['createElement']('div');
+        i['style']['cssText'] = 'position: relative; left: -9999px; visibility: hidden; display: block !important';
+        var c;
+        for (c = 0; c < o['length']; c++) {
+            var b = document['createElement']('span');
+            b['innerHTML'] = 'abcdefhijklmnopqrstuvxyz1234567890;+-.';
+            b['style']['fontSize'] = '90px';
+            b['style']['fontFamily'] = o[c];
+            i['appendChild'](b);
+        }
+        for (document['body']['appendChild'](i), c = 0; c <
+            i['childNodes']['length']; c++) {
+            b = i['childNodes'][c];
+            m[c] = b['offsetWidth'];
+            r[c] = b['offsetHeight'];
+        }
+        document['body']['removeChild'](i);
+
+        if (get_cf_date() - e > a)
+            return n;
+
+        var d = ['Geneva', 'Lobster', 'New York', 'Century', 'Apple Gothic', 'Minion Pro', 'Apple LiGothic',
+                'Century Gothic', 'Monaco', 'Lato', 'Fantasque Sans Mono', 'Adobe Braille', 'Cambria', 'Futura',
+                'Bell MT', 'Courier', 'Courier New', 'Calibri', 'Avenir Next', 'Birch Std', 'Palatino',
+                'Ubuntu Regular', 'Oswald', 'Batang', 'Ubuntu Medium', 'Cantarell', 'Droid Serif', 'Roboto',
+                'Helvetica Neue', 'Corsiva Hebrew', 'Adobe Hebrew', 'TI-Nspire', 'Comic Neue', 'Noto', 'AlNile',
+                'Palatino-Bold', 'ArialHebrew-Light', 'Avenir', 'Papyrus', 'Open Sans', 'Times', 'Quicksand',
+                'Source Sans Pro', 'Damascus', 'Microsoft Sans Serif'
+            ],
+            k = document['createElement']('div');
+        k['style']['cssText'] = 'position: relative; left: -9999px; visibility: hidden; display: block !important';
+
+        for (var l = [], s = 0; s < d['length']; s++) {
+            var u = document['createElement']('div');
+
+            for (c = 0; c < o['length']; c++) {
+                var b = document['createElement']('span');
+                b['innerHTML'] = 'abcdefhijklmnopqrstuvxyz1234567890;+-.';
+                b['style']['fontSize'] = '90px';
+                b['style']['fontFamily'] = d[s] + ',' + o[c];
+                u['appendChild'](b)
+            }
+
+            k['appendChild'](u)
+        }
+
+        if (get_cf_date() - e > a) {
+            return n;
+        }
+
+        document['body']['appendChild'](k);
+
+        for (var s = 0; s < k['childNodes']['length']; s++) {
+            var _ = !1,
+                u = k['childNodes'][s];
+
+            for (c = 0; c < u['childNodes']['length']; c++) {
+                var b = u['childNodes'][c];
+                if (b['offsetWidth'] !== m[c] || b['offsetHeight'] !== r[c]) {
+                    _ = !0;
+                    break
+                }
+            }
+
+            if (_ && l['push'](s), get_cf_date() - e > a) break
+        }
+
+        document['body']['removeChild'](k);
+        n = l['sort']()
+        return n;
+    }
+
+    function fonts() {
+        var a = [];
+        var e = ['serif', 'sans-serif', 'monospace'],
+            n = [0, 0, 0],
+            o = [0, 0, 0],
+            m = document['createElement']('span');
+
+        m['innerHTML'] = 'abcdefhijklmnopqrstuvxyz1234567890;+-.';
+        m['style']['fontSize'] = '90px';
+
+        var r;
+        for (r = 0; r < e['length']; r++) {
+            m['style']['fontFamily'] = e[r];
+            document['body']['appendChild'](m);
+            n[r] = m['offsetWidth'];
+            o[r] = m['offsetHeight'];
+            document['body']['removeChild'](m);
+        }
+
+        for (var i = ['Geneva', 'Lobster', 'New York', 'Century', 'Apple Gothic', 'Minion Pro', 'Apple LiGothic',
+                'Century Gothic', 'Monaco', 'Lato', 'Fantasque Sans Mono', 'Adobe Braille', 'Cambria', 'Futura',
+                'Bell MT', 'Courier', 'Courier New', 'Calibri', 'Avenir Next', 'Birch Std', 'Palatino',
+                'Ubuntu Regular', 'Oswald', 'Batang', 'Ubuntu Medium', 'Cantarell', 'Droid Serif', 'Roboto',
+                'Helvetica Neue', 'Corsiva Hebrew', 'Adobe Hebrew', 'TI-Nspire', 'Comic Neue', 'Noto', 'AlNile',
+                'Palatino-Bold', 'ArialHebrew-Light', 'Avenir', 'Papyrus', 'Open Sans', 'Times', 'Quicksand',
+                'Source Sans Pro', 'Damascus', 'Microsoft Sans Serif'
+            ], c = [], b = 0; b < i['length']; b++) {
+            var d = !1;
+
+            for (r = 0; r < e['length']; r++)
+                if (m['style']['fontFamily'] = i[b] + ',' + e[r], document['body']['appendChild'](m), m[
+                        'offsetWidth'] === n[r] && m['offsetHeight'] === o[r] || (d = !0), document['body'][
+                        'removeChild'
+                    ](
+                        m), d) {
+                    c['push'](b);
+                    break
+                }
+        }
+        a = c['sort']()
+        return a;
+    }
+
+    window_model['fonts_optm'] = fonts_optm();
+    window_model['fonts'] = fonts();
+
+    function getmr() {
+        try {
+            if ('undefined' == typeof performance || void 0 === performance['now'] || 'undefined' == typeof JSON)
+            return void(window_model['mr'] = 'undef');
+            for (var a = '', t = 1e3, e = [Math['abs'], Math['acos'], Math['asin'], Math['atanh'], Math['cbrt'], Math[
+                        'exp'], Math['random'], Math['round'], Math['sqrt'], isFinite, isNaN, parseFloat, parseInt,
+                    JSON['parse']
+                ], n = 0; n < e['length']; n++) {
+                var o = [],
+                    m = 0,
+                    r = performance['now'](),
+                    i = 0,
+                    c = 0;
+                if (void 0 !== e[n]) {
+                    for (i = 0; i < t && m < .6; i++) {
+                        for (var b = performance['now'](), d = 0; d < 4e3; d++) e[n](3.14);
+                        var k = performance['now']();
+                        o['push'](Math['round'](1e3 * (k - b))), m = k - r
+                    }
+                    var l = o['sort']();
+                    c = l[Math['floor'](l['length'] / 2)] / 5
+                }
+                a = a + c + ','
+            }
+            window_model['mr'] = a
+        } catch (a) {
+            window_model['mr'] = 'exception'
+        }
+    }
+
+    getmr();
+
+    function postFingerprint() {
+        const headers = {
+            'content-type': 'application/json'
+        };
+        return fetch('https://akamai-profiles.appspot.com/fingerprint', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(window_model)
+        });
+    }
+
+    postFingerprint()
+        .then(r => {
+            document.getElementById("profile-harvester").innerText = 'Browser Info Logged - Polar Cop Thanks You!';
+
+        })
+        .catch(e => console.error('sending the profile failed. Error: ', e));
+
+   
+</script>
+
+</html>
